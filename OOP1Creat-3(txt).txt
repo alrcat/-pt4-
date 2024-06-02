@@ -1,0 +1,45 @@
+Factory Method, Abstract Factory
+OOP1Creat3°. Factory Method (Фабричный метод) — порождающий паттерн.
+
+Задание 3. Реализовать иерархию классов-животных с абстрактным предком Animal, содержащим метод GetInfo, который возвращает строковое значение, и шестью конкретными потомками: Lion, Tiger, Leopard (кошачьи, cats), Gorilla, Orangutan, Chimpanzee (человекообразные обезьяны, apes). Каждый конкретный класс содержит строковое поле name (имя животного), которое определяется в его конструкторе с помощью одноименного параметра. Метод GetInfo возвращает имя класса и имя животного, разделенные пробелом, например, "Lion Tom".
+
+Реализовать иерархию классов-создателей с абстрактным предком AnimalCreator и конкретными потомками CatCreator и ApeCreator. Фабричный метод CreateAnimal(ind, name) этих классов принимает параметр целого типа ind и строковый параметр name и возвращает объект типа Animal. Для конкретных классов CatCreator и ApeCreator параметр ind метода CreateAnimal определяет тип создаваемого животного по его индексу (0, 1 или 2) в группе кошачьих или обезьян, а параметр name — имя животного.
+
+В классе AnimalCreator также определить метод GetZoo с двумя параметрами-массивами inds и names одинакового размера; массив inds содержит целые числа, массив names — строки (предполагается, что элементы массива inds всегда имеют значения в диапазоне от 0 до 2). Метод GetZoo возвращает массив объектов Animal того же размера, что и массивы inds и names; каждый элемент полученного массива определяется с помощью фабричного метода с параметрами, равными значениям соответствующих элементов массивов inds и names.
+
+Тестирование разработанной системы классов. Дан набор из 4 пар (ind, name), где ind — целое число в диапазоне от 0 до 2, а name — строка. Сформировать массивы inds и names размера 4, содержащие числа и строки из исходного набора, и использовать их в методе GetZoo для создателей CatCreator и ApeCreator, получив в результате наборы кошачьих и обезьян размера 4. С помощью метода GetInfo вывести информацию о животных из каждого набора.
+
+public abstract class Animal
+{
+    public abstract string GetInfo();
+}
+
+public class Lion : Animal
+{
+    string name;
+    public Lion(string name)
+    {
+        this.name = name;
+    }
+    public override string GetInfo()
+    {
+        return "Lion " + name;
+    }
+}
+
+// Implement the Tiger, Leopard, Gorilla,
+//   Orangutan and Chimpanzee descendant classes
+
+public abstract class AnimalCreator
+{
+    protected abstract Animal CreateAnimal(int ind, string name);
+    public Animal[] GetZoo(int[] inds, string[] names)
+    {
+        Animal[] zoo = new Animal[inds.Length];
+        for (int i = 0; i < zoo.Length; i++)
+            zoo[i] = CreateAnimal(inds[i], names[i]);
+        return zoo;
+    }
+}
+
+// Implement the CatCreator and ApeCreator descendant classes
